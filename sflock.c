@@ -88,6 +88,10 @@ main(int argc, char **argv) {
     XFontStruct* font;
     GC gc; 
     XGCValues values;
+    XClassHint* class_hint = XAllocClassHint();
+	 class_hint->res_name = "sflock";
+	 class_hint->res_class = "sflock";
+
 
     // defaults
     char* passchar = "*";
@@ -186,6 +190,7 @@ main(int argc, char **argv) {
     invisible = XCreatePixmapCursor(dpy, pmap, pmap, &black, &black, 0, 0);
     XDefineCursor(dpy, w, invisible);
     XMapRaised(dpy, w);
+    XSetClassHint(dpy, w, class_hint);
 
     font = XLoadQueryFont(dpy, fontname);
 
@@ -316,6 +321,7 @@ main(int argc, char **argv) {
     XFreePixmap(dpy, pmap);
     XFreeFont(dpy, font);
     XFreeGC(dpy, gc);
+    XFree(class_hint);
     XDestroyWindow(dpy, w);
     XCloseDisplay(dpy);
     return 0;
